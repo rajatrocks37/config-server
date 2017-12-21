@@ -1,0 +1,445 @@
+---
+products:
+- name: Easy GO OTT
+  resources:
+  - name: VNF
+    items:
+    - name: State
+      trigger:
+      - ACTIVE
+      - BUILDING
+      - PAUSED
+      - SUSPENDED
+      - STOPPED
+      - SOFT_DELETED
+      - RESIZED
+      - RESCUED
+      - SHELVED
+      - SHELVED_OFFLOADED
+      - DELETED
+      - ERROR
+      type: state
+      eventNature:
+      - Virtual Instance Stopped
+      - Virtual Instance Suspended
+      - Virtual Instance Deleted
+      - Virtual Instance Error
+    - name: CPU Load (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - Virtual Instance CPU load high
+      - Virtual Instance CPU load full
+    - name: Used RAM (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - Virtual Instance RAM usage high
+      - Virtual Instance RAM usage full
+    - name: Used RAM (Bytes)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - Virtual Instance RAM usage high
+      - Virtual Instance RAM usage full
+    - name: Total RAM (Bytes)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - Virtual Instance RAM usage high
+      - Virtual Instance RAM usage full
+    - name: Used Disk (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - Virtual Instance Disk full
+      - Virtual Instance Disk usage critical
+    - name: Used Disk (Bytes)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - Virtual Instance Disk full
+      - Virtual Instance Disk usage critical
+    - name: Total Disk (Bytes)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - Virtual Instance Total Disk not enogh
+      - Virtual Instance Total Disk critical
+    match:
+    - ALL
+    - Tenant:POP_NAME:VM_NAME
+    - SERVICE_INSTANCE_TEMPLATE_NAME
+    - FLAVOR_NAME
+    - IMAGE_NAME
+    details:
+    - VNF UUID
+    - VNF Name
+    - VNF Status
+    - VNF Power Status
+    - VNF CPU load of 1 min
+    - VNF Total RAM
+    - VNF Used RAM
+    - VNF Total Disk
+    - VNF Used Disk
+    - VNF Last launched Date
+    - VNF Attached VN(s)
+    - VNF Service Template
+    - VNF Service Instance Name
+    - VNF Service Instance UUID
+    - VNF Creation Date
+    - VNF Last Modification Date
+    - VNF Virsh Instance Name
+    - VNF Compute host
+    - VNF Flavor UUID
+    - VNF Flavor Name
+    - VNF Flavor Disk Space
+    - VNF Flavor vCPU
+    - VNF Flavor RAM
+    - VNF Image UUID
+    - VNF Image Name
+    - VNF Image Status
+    alarmMessage:
+    - VNF is not running
+    - VNF disk space full
+    - VNF RAM full usage
+    additionalAlarmCriteria:
+    - VNF Service Template
+    - VNF Compute host
+    - VNF Flavor Name
+    - VNF Image Name
+  - name: Virtual Network
+    items:
+    - name: Admin State
+      trigger:
+      - ACTIVE
+      - DOWN
+      - UNKNOWN
+      type: state
+      eventNature:
+      - Virtual Network Down
+      - Virtual Network Error
+    - name: Policies
+      trigger:
+      - Equal
+      - Exit
+      - Different
+      - Not set
+      type: condition
+      eventNature:
+      - Static route absent
+      - Static route mismatch
+    - name: Route Target Import
+      trigger:
+      - Equal
+      - Exit
+      - Different
+      - Not set
+      type: condition
+      eventNature:
+      - Route Target absent
+      - Route Target mismatch
+    - name: IPAM
+      trigger:
+      - Equal
+      - Exit
+      - Different
+      - Not set
+      type: condition
+      eventNature:
+      - IPAM absent
+      - IPAM mismatch
+    match:
+    - ALL
+    - TENANT:VN_NAME
+    details:
+    - VN UUID
+    - VN Name
+    - VN Subnet
+    - VN IPAM Name
+    - VN Status
+    - VN Admin Status
+    - VN RT Import
+    - VN RT Export
+    - VN Routing Instance UUID
+    - VN Static Routes UUID
+    - VN Policies UUID
+    - VN Policies Name
+    - VN Connected Interfaces
+    - Security Group
+    alarmMessage:
+    - Virtual Network Down
+    - No traffic to Internet
+    - RT Import/Export mismatch
+    additionalAlarmCriteria:
+    - VN Name
+    - VN RT Import
+    - VN RT Export
+    - VN Policies Name
+  - name: Virtual Port
+    items:
+    - name: Admin State
+      trigger:
+      - Enabled
+      - Disabled
+      - UNKNOWN
+      type: state
+      eventNature:
+      - Virtual Port Down
+      - Virtual Port Error
+    - name: IPv4 Address
+      trigger:
+      - Equal
+      - Different
+      - In Subnet
+      - Out of Subnet
+      - Not set
+      type: condition
+      eventNature:
+      - Virtual Port IP Addr absent
+      - Virtual Port IP Addr in range
+      - Virtual Port IP Addr out of range
+      - Virtual Port IP not set
+    - name: MAC Address
+      trigger:
+      - Equal
+      - Different
+      - Exist
+      - Not Set
+      type: condition
+      eventNature:
+      - Virtual Port MAC Addr No set
+      - Virtual Port MAC Addr mismatch
+    - name: Bytes IN
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - No traffic in virtual port
+      - Lower traffic in virtual port
+    - name: Bytes OUT
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - No traffic in virtual port
+      - Lower traffic in virtual port
+    - name: Packets IN
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - No traffic in virtual port
+      - Lower traffic in virtual port
+    - name: Packets OUT
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - No traffic in virtual port
+      - Lower traffic in virtual port
+    match:
+    - ALL
+    - TENANT:VN_NAME
+    - TENANT:POP_NAME:VM_NAME
+    details:
+    - vPort UUID
+    - vPort TAP Interface name
+    - vPort Name
+    - vPort Type
+    - vPort MAC Address
+    - vPort IPv4 Address
+    - vPort Status
+    - vPort Admin Status
+    - vPort Binding Host
+    - vPort IN Bytes
+    - vPort OUT Bytes
+    - vPort IN Packets
+    - vPort OUT Packets
+    - vPort Security Group Name
+    - vPort attached VN UUID
+    - vPort attached VN Name
+    - vPort VNF UUID
+    alarmMessage:
+    - Virtual Port Down
+    - No traffic in virtual port
+    - vPort Security Group mismatch
+    - vPort no IPv4 Address configured
+    additionalAlarmCriteria:
+    - vPort Name
+    - vPort Type
+    - vPort Binding Host
+    - vPort Security Group Name
+  - name: POP compute server
+    items:
+    - name: Status
+      trigger:
+      - enabled/up
+      - disabled/up
+      type: state
+      eventNature:
+      - POP Down
+      - POP Error
+    - name: CPU Load 1 min avg (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP CPU load five min avg high
+      - POP CPU load five min avg full
+    - name: CPU Load 5 min avg (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP CPU load five min avg high
+      - POP CPU load five min avg full
+    - name: CPU Load 15 min avg (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP CPU load fifteen min avg high
+      - POP CPU load fifteen min avg full
+    - name: Used RAM (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP Used RAM high
+      - POP Used RAM full
+    - name: Used RAM (Bytes)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP Used RAM high
+      - POP Used RAM full
+    - name: Free RAM (Bytes)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP Used RAM high
+      - POP Used RAM full
+    - name: Total RAM (Bytes)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP Used RAM high
+      - POP Used RAM full
+    - name: Used vCPU (%)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP Used vCPU high
+      - POP Used vCPU full
+    - name: Used vCPU (nbr)
+      trigger:
+      - Equal
+      - Upper than
+      - Lower than
+      - Different
+      type: condition
+      eventNature:
+      - POP Used vCPU high
+      - POP Used vCPU full
+    match:
+    - ALL
+    - POP_Name
+    - POP_Compute _FQDN
+    details:
+    - POP Name
+    - POP Time
+    - POP Compute FQDN
+    - POP Compute Status
+    - POP Compute Version
+    - POP Compute Uptime
+    - POP Compute total vCPU
+    - POP Compute used vCPU
+    - POP Compute CPU load 1mn avg
+    - POP Compute CPU load 5mn avg
+    - POP Compute CPU load 15mn avg
+    - POP Compute Total RAM
+    - POP Compute Used RAM
+    - POP Compute Free RAM
+    - POP Compute VMs list
+    alarmMessage:
+    - POP Compute status down
+    - No VNF available in POP Compute
+    - POP fullRAM usage
+    - POP High CPU usage
+    additionalAlarmCriteria:
+    - POP Name
+    - POP Compute FQDN
+    - POP Compute VMs list
+    - POP Compute Version
+    
+configuration:
+    projectname: test
